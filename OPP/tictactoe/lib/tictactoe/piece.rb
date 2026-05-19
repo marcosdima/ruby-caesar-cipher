@@ -9,5 +9,9 @@ module TicTacToe
     def ==(other)
       self.value == other.value
     end
+
+    def to_s
+      self.value
+    end
   end
 end
