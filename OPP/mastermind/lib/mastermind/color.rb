@@ -14,5 +14,9 @@ module Mastermind
     def to_s
       name
     end
+
+    def inspect
+      name
+    end
   end
 end

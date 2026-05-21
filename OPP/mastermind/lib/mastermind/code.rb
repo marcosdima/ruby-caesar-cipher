@@ -4,7 +4,7 @@ module Mastermind
     MISSED = '0'
     WRONG = '-'
 
-    def initialize(colors)
+    def initialize(colors = [])
       @colors = colors
     end
 
@@ -18,6 +18,18 @@ module Mastermind
           acc += WRONG
         end
       end
+    end
+
+    def self.guessed?(feedback)
+      feedback.chars.all? { |char| char == HIT }
+    end
+
+    def empty?
+      @colors.empty?
+    end
+
+    def reveal
+      @colors
     end
   end
 end
