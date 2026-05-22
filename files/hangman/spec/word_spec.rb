@@ -32,4 +32,21 @@ describe 'Testing word' do
       expect(word.wrong_guesses).not_to include('t')
     end
   end
+
+  describe 'Should determine if the word has been guessed correctly' do
+    it 'If all letters in the word have been guessed, it should return true' do
+      word = Hangman::Word.new('test')
+      word.guess('t')
+      word.guess('e')
+      word.guess('s')
+      expect(word.guessed_correctly?).to be true
+    end
+
+    it 'If not all letters in the word have been guessed, it should return false' do
+      word = Hangman::Word.new('test')
+      word.guess('t')
+      word.guess('e')
+      expect(word.guessed_correctly?).to be false
+    end
+  end
 end

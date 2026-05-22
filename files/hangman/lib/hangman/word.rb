@@ -17,5 +17,9 @@ module Hangman
     def wrong_guesses
       @guesses - @text.chars
     end
+
+    def guessed_correctly?
+      (@text.chars - @guesses).empty?
+    end
   end
 end
