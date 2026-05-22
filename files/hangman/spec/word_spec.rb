@@ -33,6 +33,27 @@ describe 'Testing word' do
     end
   end
 
+  describe 'Should return the correct string representation of the word' do
+    it 'If no letters have been guessed, it should return underscores for each letter' do
+      word = Hangman::Word.new('test')
+      expect(word.to_s).to eq('_ _ _ _')
+    end
+
+    it 'If some letters have been guessed, it should return those letters and underscores for the rest' do
+      word = Hangman::Word.new('test')
+      word.guess('t')
+      expect(word.to_s).to eq('t _ _ t')
+    end
+
+    it 'If all letters have been guessed, it should return the full word' do
+      word = Hangman::Word.new('test')
+      word.guess('t')
+      word.guess('e')
+      word.guess('s')
+      expect(word.to_s).to eq('t e s t')
+    end
+  end
+
   describe 'Should determine if the word has been guessed correctly' do
     it 'If all letters in the word have been guessed, it should return true' do
       word = Hangman::Word.new('test')

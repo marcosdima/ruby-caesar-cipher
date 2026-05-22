@@ -1,6 +1,6 @@
 module Hangman
   class Word
-    attr_reader :text, :guesses
+    attr_reader :guesses
 
     def initialize(text)
       @text = text
@@ -20,6 +20,10 @@ module Hangman
 
     def guessed_correctly?
       (@text.chars - @guesses).empty?
+    end
+
+    def to_s
+      @text.chars.map { |char| @guesses.include?(char) ? char : '_' }.join(' ')
     end
   end
 end
