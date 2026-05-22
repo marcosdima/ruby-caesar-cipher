@@ -70,4 +70,12 @@ describe 'Testing word' do
       expect(word.guessed_correctly?).to be false
     end
   end
+
+  describe 'Should allow revealing the word' do
+    it 'If the word is revealed, to_s should return the full word' do
+      word = Hangman::Word.new('test')
+      word.revealed = true
+      expect(word.to_s).to eq('test')
+    end
+  end
 end

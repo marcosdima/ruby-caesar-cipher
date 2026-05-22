@@ -1,10 +1,12 @@
 module Hangman
   class Word
+    attr_accessor :revealed
     attr_reader :guesses
 
     def initialize(text)
       @text = text
       @guesses = []
+      self.revealed = false
     end
 
     def guess(letter)
@@ -23,7 +25,7 @@ module Hangman
     end
 
     def to_s
-      @text.chars.map { |char| @guesses.include?(char) ? char : '_' }.join(' ')
+      self.revealed ? @text : @text.chars.map { |char| @guesses.include?(char) ? char : '_' }.join(' ')
     end
   end
 end
