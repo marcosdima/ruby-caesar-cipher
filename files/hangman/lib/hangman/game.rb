@@ -40,6 +40,8 @@ module Hangman
     end
 
     def guess_letter(letter)
+      letter = letter.downcase
+      
       # Word not picked.
       if self.current_word.nil?
         raise "No word has been picked yet."

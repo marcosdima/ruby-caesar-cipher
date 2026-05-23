@@ -57,6 +57,18 @@ describe 'Testing Game' do
 
       expect { game.guess_letter('a') }.to raise_error(RuntimeError)
     end
+
+    it 'If the letter has already been guessed, it should not let guess it again' do
+      game.pick_word
+      game.guess_letter('a')
+      expect { game.guess_letter('a') }.to raise_error(RuntimeError)
+    end
+
+    it 'If the letter was uppercase, it should be treated as lowercase' do
+      game.pick_word
+      game.guess_letter('A')
+      expect(game.current_word.guesses).to include('a')
+    end
   end
 
   describe 'It should return the game status' do
