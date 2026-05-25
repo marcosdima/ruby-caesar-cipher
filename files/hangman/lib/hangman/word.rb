@@ -10,9 +10,6 @@ module Hangman
     end
 
     def guess(letter)
-      unless letter.length == 1
-        raise ArgumentError, 'Guess must be a single letter'
-      end
       @guesses << letter
     end
 
@@ -25,7 +22,11 @@ module Hangman
     end
 
     def to_s
-      self.revealed ? @text : @text.chars.map { |char| @guesses.include?(char) ? char : '_' }.join(' ')
+      if self.guessed_correctly? || self.revealed
+        @text
+      else
+        @text.chars.map { |char| @guesses.include?(char) ? char : '_' }.join(' ')
+      end
     end
   end
 end
