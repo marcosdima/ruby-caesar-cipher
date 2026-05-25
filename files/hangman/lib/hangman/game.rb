@@ -1,7 +1,10 @@
+require_relative '../serialize'
 require_relative './word'
 
 module Hangman
   class Game
+    include BasicSerializable
+
     TRIES = 6
     attr_reader :words_played, :dictionary, :min_length, :max_length, :current_word
 
@@ -36,7 +39,7 @@ module Hangman
       end
       
       # Set a new current word from the remaining ones.
-      self.current_word = Hangman::Word.new(@available_words.sample)
+      @current_word = Hangman::Word.new(@available_words.sample)
     end
 
     def guess_letter(letter)
@@ -68,11 +71,61 @@ module Hangman
       if self.current_word.wrong_guesses.length >= TRIES
         self.current_word.revealed = true
       end
+
+      if self.current_word.guessed_correctly? || self.current_word.revealed
+        @words_played << self.current_word
+      end
     end
 
-    private def current_word=(word)
-      @current_word = word
-      @words_played << word
+    # Serialization #
+    def exclude_from_serialization
+      [:@dictionary, :@available_words]
+    end
+
+    def serialize
+      obj = {}
+      excluded = exclude_from_serialization
+
+      instance_variables.map do |var|
+        next if excluded.include?(var)
+
+        value = instance_variable_get(var)
+        case var
+          when :@current_word
+            obj[var] = value.serialize
+          when :@words_played
+            obj[var] = value.map { |word| word.serialize }
+          else
+            obj[var] = value
+        end
+      end
+
+      @@serializer.dump obj
+    end
+
+    def unserialize(string)
+      obj = @@serializer.parse(string)
+      excluded = exclude_from_serialization
+
+      obj.keys.each do |key|
+        next if excluded.include?(key)
+
+        value = obj[key]
+        case key
+          when "@current_word"
+            instance_variable_set(key, unserialize_word(value))
+          when "@words_played"
+            instance_variable_set(key, value.map { |word_data| unserialize_word(word_data) })
+          else
+            instance_variable_set(key, obj[key])
+        end
+      end
+    end
+
+    private def unserialize_word(word_data)
+      word = Hangman::Word.new('')
+      word.unserialize(word_data)
+      word
     end
   end
 end

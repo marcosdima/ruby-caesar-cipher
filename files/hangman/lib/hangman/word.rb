@@ -1,5 +1,9 @@
+require_relative '../serialize'
+
 module Hangman
   class Word
+    include BasicSerializable
+    
     attr_accessor :revealed
     attr_reader :guesses
 

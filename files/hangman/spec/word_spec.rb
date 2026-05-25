@@ -77,4 +77,18 @@ describe 'Testing word' do
       expect(word.to_s).to eq('test')
     end
   end
+
+  describe 'Serialization' do
+    it 'Should be able to serialize and unserialize the word state' do
+      word = Hangman::Word.new('test')
+      word.guess('t')
+      serialized = word.serialize
+      
+      new_word = Hangman::Word.new('')
+      new_word.unserialize(serialized)
+
+      expect(new_word.to_s).to eq(word.to_s)
+      expect(new_word.guesses).to eq(word.guesses)
+    end
+  end
 end

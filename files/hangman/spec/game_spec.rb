@@ -78,4 +78,19 @@ describe 'Testing Game' do
       expect(game.current_word.guesses).to include('a')
     end
   end
+
+  describe 'Serialization' do
+    it 'Should be able to serialize and unserialize the game state' do
+      game.pick_word
+      game.guess_letter('a')
+      serialized = game.serialize
+
+      new_game = Hangman::Game.new(dictionary)
+      new_game.unserialize(serialized)
+
+      expect(new_game.current_word.to_s).to eq(game.current_word.to_s)
+      expect(new_game.current_word.guesses).to eq(game.current_word.guesses)
+      expect(new_game.words_played.map { |word| word.to_s }).to eq(game.words_played.map { |word| word.to_s })
+    end
+  end
 end
