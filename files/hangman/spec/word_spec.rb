@@ -43,7 +43,7 @@ describe 'Testing word' do
       word.guess('t')
       word.guess('e')
       word.guess('s')
-      expect(word.to_s).to eq('t e s t')
+      expect(word.to_s).to eq('test')
     end
   end
 
