@@ -41,6 +41,11 @@ module Hangman
 
     def guess_letter(letter)
       letter = letter.downcase
+
+      # Validate input.
+      unless letter.length == 1 && letter.match?(/[a-z]/)
+        raise ArgumentError, 'Guess must be a single letter (a-z)'
+      end
       
       # Word not picked.
       if self.current_word.nil?

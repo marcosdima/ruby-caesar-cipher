@@ -36,32 +36,40 @@ describe 'Testing Game' do
   end
 
   describe 'It should let guess a letter' do
-    it 'Should not let guess if no word has been picked' do
-      expect { game.guess_letter('a') }.to raise_error(RuntimeError)
-    end
-
-    it 'Should not let guess if the current word has already been guessed correctly' do
-      game.pick_word
-      game.guess_letter('a')
-      expect { game.guess_letter('a') }.to raise_error(RuntimeError)
-    end
-
-    it 'Should not let guess if the current word has already been guessed incorrectly too many times' do
-      game.pick_word
-
-      letter = 'a'
-      while !game.current_word.revealed
-        game.guess_letter(letter)
-        letter = (letter.ord + 1).chr
+    describe 'Should not let guess if...' do
+      it '... the input is not a single letter' do
+        expect { game.guess_letter('ab') }.to raise_error(ArgumentError)
+        expect { game.guess_letter('1') }.to raise_error(ArgumentError)
+        expect { game.guess_letter('@') }.to raise_error(ArgumentError)
+      end
+      
+      it '... no word has been picked' do
+        expect { game.guess_letter('a') }.to raise_error(RuntimeError)
       end
 
-      expect { game.guess_letter('a') }.to raise_error(RuntimeError)
-    end
+      it '... the letter has already been guessed' do
+        game.pick_word
+        game.guess_letter('a')
+        expect { game.guess_letter('a') }.to raise_error(RuntimeError)
+      end
 
-    it 'If the letter has already been guessed, it should not let guess it again' do
-      game.pick_word
-      game.guess_letter('a')
-      expect { game.guess_letter('a') }.to raise_error(RuntimeError)
+      it '... the current word has already been guessed correctly' do
+        game.pick_word
+        game.guess_letter('a')
+        expect { game.guess_letter('a') }.to raise_error(RuntimeError)
+      end
+
+      it '... the current word has already been guessed incorrectly too many times' do
+        game.pick_word
+
+        letter = 'a'
+        while !game.current_word.revealed
+          game.guess_letter(letter)
+          letter = (letter.ord + 1).chr
+        end
+
+        expect { game.guess_letter('a') }.to raise_error(RuntimeError)
+      end
     end
 
     it 'If the letter was uppercase, it should be treated as lowercase' do
