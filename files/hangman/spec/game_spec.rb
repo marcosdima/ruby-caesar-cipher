@@ -70,42 +70,4 @@ describe 'Testing Game' do
       expect(game.current_word.guesses).to include('a')
     end
   end
-
-  describe 'It should return the game status' do
-    it 'Should return the current word, guesses, wrong guesses and words played' do
-      game.pick_word
-      status = game.status
-      expect(status).to have_key(:current_word)
-      expect(status).to have_key(:guesses)
-      expect(status).to have_key(:wrong_guesses)
-      expect(status).to have_key(:words_played)
-    end
-
-    it 'Current word should be nil if no word has been picked' do
-      expect(game.status[:current_word]).to be_nil
-    end
-
-    it 'Guesses and wrong guesses should be empty arrays if no word has been picked' do
-      expect(game.status[:guesses]).to be_empty
-      expect(game.status[:wrong_guesses]).to be_empty
-    end
-
-    describe 'Words played should be an empty array if...' do
-      it 'No word has been picked' do
-        expect(game.status[:words_played]).to be_empty
-      end
-
-      it 'The first word has been picked but not guessed correctly or revealed' do
-        game.pick_word
-        expect(game.status[:words_played]).to be_empty
-      end
-    end
-
-    it 'Words played should include the current word if it has been guessed correctly or revealed' do
-      game.pick_word
-      game.current_word.revealed = true
-      game.pick_word
-      expect(game.status[:words_played].length).to eq(1)
-    end
-  end
 end

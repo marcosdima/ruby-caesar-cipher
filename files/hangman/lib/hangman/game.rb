@@ -65,17 +65,6 @@ module Hangman
       end
     end
 
-    def status
-      {
-        current_word: self.current_word ? self.current_word.to_s : nil,
-        guesses: self.current_word ? self.current_word.guesses : [],
-        wrong_guesses: self.current_word ? self.current_word.wrong_guesses : [],
-        words_played: self.words_played.filter do |word|
-          word.guessed_correctly? || word.revealed 
-        end.map { |word| word.to_s }
-      }
-    end
-
     private def current_word=(word)
       @current_word = word
       @words_played << word
